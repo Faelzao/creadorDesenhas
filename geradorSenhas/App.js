@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'; // estado da varieavel 
 import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
 import { ModalPassaword } from './src/components/modal/index.js';
 
@@ -29,10 +29,10 @@ export default function App() {
 
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType='fade' transparent={true}>
-        <ModalPassaword />
+        <ModalPassaword senha={senhaGerada} fecharModal={() =>  setModalVisible(false )} />
       </Modal>
 
-      <Text style={styles.genText}>{senhaGerada}</Text>
+      
     </View>
   );
 }
