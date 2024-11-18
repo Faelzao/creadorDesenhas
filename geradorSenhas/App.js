@@ -1,14 +1,26 @@
 import { useState } from 'react'; // estado da varieavel 
 import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack' ;
+
 import { ModalPassaword } from './src/components/modal/index.js';
 
 let charset = "abcdefghijklmnopqrstuvwxyz!#$&%0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function HomeScreen({ navigation}) {
   const [senhaGerada, setSenhaGerada] = useState("");
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
+  const [savedPasswords, setSavedPasswords] = useState([]);
+
+
+
+  
+
 
   function gerarSenha() {
+
     let senha = "";
     for (let i = 0, n = charset.length; i < 8; i++) {
       senha += charset.charAt(Math.floor(Math.random() * n))
@@ -16,6 +28,15 @@ export default function App() {
     setSenhaGerada(senha)
     setModalVisible(true)
   }
+  function salvarSenha(){
+    setSavedPasswords(prevPasswords => {
+      const updatedPasswords = [...prevPasswords,senhaGerada];
+      setModalVisible(false);
+      navigation.navigate('SavedPasswords' , { savedPasswords: updatedPasswords});
+      return updatedPasswords;
+    });
+  }
+  
   return (
     <View style={styles.container}>
       <Image source={require("./src/img/logolock.png")}
@@ -29,7 +50,7 @@ export default function App() {
 
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType='fade' transparent={true}>
-        <ModalPassaword senha={senhaGerada} fecharModal={() =>  setModalVisible(false )} />
+        <ModalPassaword senha={senhaGerada} fecharModal={() =>  setModalVisible(false )} salvarSenha={salvarSenha} />
       </Modal>
 
       
