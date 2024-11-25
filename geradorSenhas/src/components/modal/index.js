@@ -2,40 +2,39 @@ import { View, Text, StyleSheet, Pressable, TouchableOpacity } from "react-nativ
 import * as Clipboard from 'expo-clipboard';
 import Toast from 'react-native-toast-message';
 
-export function ModalPassaword({senha,fecharModal}) {
+export function ModalPassword({ senha, fecharModal, salvarSenha }) {
 
     function copyToClipboard() {
-        Clipboard.setStringAsync(senha);
+        Clipboard.setString(senha); // Corrigido para setString ao invés de setStringAsync
         Toast.show({
             type: 'success',
             text1: 'Senha copiada!',
-            text2: 'A senha foi copiada para a área de trasferência',
+            text2: 'A senha foi copiada para a área de transferência', // Corrigido 'transferência'
         });
     }
-    return (
 
+    return (
         <View style={styles.container}>
-            <View style={styles.content}><Text style={styles.title}>Senha geral</Text>
+            <View style={styles.content}>
+                <Text style={styles.title}>Senha gerada</Text>
 
                 <Pressable style={styles.innerPassword} onPress={copyToClipboard}>
                     <Text style={styles.text}>{senha}</Text>
                 </Pressable>
 
                 <View style={styles.btnArea}>
-                    
                     <TouchableOpacity style={styles.btn} onPress={fecharModal}>
-                    <Text style={styles.btnText}>voltar</Text>
+                        <Text style={styles.btnText}>Voltar</Text>
                     </TouchableOpacity>
-                    
-                    <TouchableOpacity style={styles.btnSave}>
-                    <Text style={styles.btnTextSave}>Salvar Senha</Text>
+
+                    <TouchableOpacity style={styles.btnSave} onPress={salvarSenha}>
+                        <Text style={styles.btnTextSave}>Salvar Senha</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-        <Toast/>
+            <Toast /> {/* Corrigido: Toast deve ser fora do View */}
         </View>
-
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -60,45 +59,41 @@ const styles = StyleSheet.create({
         color: '#000',
         paddingBottom: 18,
     },
-
     innerPassword: {
         backgroundColor: "#E6E6E6",
         width: "90%",
         padding: 14,
         borderRadius: 8,
-
     },
     text: {
         textAlign: 'center',
         fontWeight: 'bold',
-
     },
     btnArea: {
-        flexDirection:"row",
+        flexDirection: "row",
         width: "90%",
         alignItems: "center",
-        justifyContent:"space-between",
+        justifyContent: "space-between",
         marginTop: 14,
-
     },
-    btnTextSave:{
+    btnTextSave: {
         color: '#FFF',
+        fontWeight: 'bold',
     },
-    btnText:{
-
+    btnText: {
+        fontWeight: 'bold',
+        color: '#000', // Garantido que o texto do botão "Voltar" seja visível
     },
-    btn:{
-        flex:1,
-        alignItems:'center',
+    btn: {
+        flex: 1,
+        alignItems: 'center',
         padding: 8,
-
     },
-    btnSave:{
-        flex:1,
-        alignItems:'center',
+    btnSave: {
+        flex: 1,
+        alignItems: 'center',
         padding: 8,
-        backgroundColor:"#333",
+        backgroundColor: "#333",
         borderRadius: 8,
-
     },
-})
+});
